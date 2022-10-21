@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { IonCard, IonCardTitle, IonCardSubtitle } from '@ionic/react';
-import Portals from '@ionic/portals';
+import React, { useEffect, useState } from "react";
+import { IonCard, IonCardTitle, IonCardSubtitle } from "@ionic/react";
 
-import './NewFeatured.css';
-import { Product } from '../models';
+import "./NewFeatured.css";
+import { Product } from "../models";
 
-const CATEGORY_NAME = 'MustHaves';
+const CATEGORY_NAME = "MustHaves";
 
 const NewFeatured = () => {
   const [productList, setProductList] = useState<Product[]>([]);
 
   useEffect(() => {
-    console.log('what effect')
-    fetch('/data.json')
+    console.log("what effect");
+    fetch("/data.json")
       .then((res) => res.json())
       .then((products: Product[]) =>
         setProductList(
           products.filter((product) => {
             return product.category === CATEGORY_NAME;
-          }),
-        ),
+          })
+        )
       );
   }, []);
 
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     maximumSignificantDigits: 2,
   });
 
@@ -35,16 +34,8 @@ const NewFeatured = () => {
       <div className="product-list">
         <div className="product-list-inner">
           {productList.map((product) => (
-            <IonCard
-              key={product.id}
-              onClick={() => {
-                Portals.publish({ topic: 'featured:select-item', data: product.id });
-              }}
-            >
-              <img
-                alt={product.title}
-                src={`/images/${product.image}`}
-              />
+            <IonCard key={product.id}>
+              <img alt={product.title} src={`/images/${product.image}`} />
               <IonCardTitle>{product.title}</IonCardTitle>
               <IonCardSubtitle>
                 {formatter.format(product.price)}
